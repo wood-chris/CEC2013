@@ -1,41 +1,51 @@
 ###############################################################################
 # Version: 1.1
-# Last modified on: 3 April, 2016 
+# Last modified on: 3 April, 2016
 # Developers: Michael G. Epitropakis
-#      email: m_(DOT)_epitropakis_(AT)_lancaster_(DOT)_ac_(DOT)_uk 
+#      email: m_(DOT)_epitropakis_(AT)_lancaster_(DOT)_ac_(DOT)_uk
 ###############################################################################
-from cfunction import *
+
 import numpy as np
+import cfunction as cf
 
-class CF2(CFunction):
-	def __init__(self, dim):
-		super(CF2, self).__init__(dim, 8)
 
-		# Initialize data for composition
-		self._CFunction__sigma_ = np.ones( self._CFunction__nofunc_ )
-		self._CFunction__bias_ = np.zeros( self._CFunction__nofunc_ )
-		self._CFunction__weight_ = np.zeros( self._CFunction__nofunc_ )
-		self._CFunction__lambda_ = np.array( [1.0, 1.0, 10.0, 10.0, 1.0/10.0, 1.0/10.0, 1.0/7.0, 1.0/7.0] )
-		
-		# Lower/Upper Bounds
-		self._CFunction__lbound_ = -5.0 * np.ones( dim )
-		self._CFunction__ubound_ = 5.0 * np.ones( dim )
+class CF2(cf.CFunction):
 
-		# Load optima
-		o = np.loadtxt('data/optima.dat') 
-		if o.shape[1] >= dim:
-			self._CFunction__O_ = o[:self._CFunction__nofunc_, :dim] 
-		else: # randomly initialize
-			self._CFunction__O_ = self._CFunction__lbound_ + (self._CFunction__ubound_ - self._CFunction__lbound_) * np.random.rand( (self._CFunction__nofunc_, dim) )
+    def __init__(self, dim):
+        super(CF2, self).__init__(dim, 8)
 
-		# M_: Identity matrices
-		self._CFunction__M_ = [ np.eye(dim) ] * self._CFunction__nofunc_
+        # Initialize data for composition
+        self._CFunction__sigma_ = np.ones(self._CFunction__nofunc_)
+        self._CFunction__bias_ = np.zeros(self._CFunction__nofunc_)
+        self._CFunction__weight_ = np.zeros(self._CFunction__nofunc_)
+        self._CFunction__lambda_ = np.array([1.0, 1.0, 10.0, 10.0, 1.0/10.0, 1.0/10.0, 1.0/7.0, 1.0/7.0])
 
-		# Initialize functions of the composition
-		self._CFunction__function_ = {0:FRastrigin, 1:FRastrigin, 2:FWeierstrass, 3:FWeierstrass, 4:FGrienwank, 5:FGrienwank, 6:FSphere, 7:FSphere}
+        # Lower/Upper Bounds
+        self._CFunction__lbound_ = -5.0 * np.ones(dim)
+        self._CFunction__ubound_ = 5.0 * np.ones(dim)
 
-		# Calculate fmaxi
-		self._CFunction__calculate_fmaxi()
+        # Load optima
+        o = np.loadtxt('data/optima.dat')
+        if o.shape[1] >= dim:
+            self._CFunction__O_ = o[:self._CFunction__nofunc_, :dim]
+        else: # randomly initialize
+            self._CFunction__O_ = self._CFunction__lbound_ + (self._CFunction__ubound_ - self._CFunction__lbound_) * np.random.rand((self._CFunction__nofunc_, dim))
 
-	def evaluate(self, x):
-		return self._CFunction__evaluate_inner_(x)
+        # M_: Identity matrices
+        self._CFunction__M_ = [np.eye(dim)] * self._CFunction__nofunc_
+
+        # Initialize functions of the composition
+        self._CFunction__function_ = {0: cf.FRastrigin,
+                                      1: cf.FRastrigin,
+                                      2: cf.FWeierstrass,
+                                      3: cf.FWeierstrass,
+                                      4: cf.FGrienwank,
+                                      5: cf.FGrienwank,
+                                      6: cf.FSphere,
+                                      7: cf.FSphere}
+
+        # Calculate fmaxi
+        self._CFunction__calculate_fmaxi()
+
+    def evaluate(self, x):
+        return self._CFunction__evaluate_inner_(x)
