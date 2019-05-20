@@ -6,6 +6,8 @@
 ###############################################################################
 
 from builtins import object
+import os
+
 import numpy as np
 
 # UNCOMMENT APPROPRIATELY
@@ -35,6 +37,14 @@ class CFunction(object):
     def __init__(self, dim, nofunc):
         self.__dim_ = dim
         self.__nofunc_ = nofunc
+
+        # Load optima
+        self.path = os.path.abspath(os.path.dirname(__file__))
+        file_path = os.path.join(self.path, "data/optima.dat")
+        self.o = np.loadtxt(file_path)
+
+    def function_data_file(self, fn, dim):
+        return os.path.join(self.path, "data/CF{}_M_D{}.dat".format(fn, dim))
 
     def evaluate(self, x):
         pass

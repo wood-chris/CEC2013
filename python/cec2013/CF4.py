@@ -24,16 +24,14 @@ class CF4(cf.CFunction):
         self._CFunction__lbound_ = -5.0 * np.ones(dim)
         self._CFunction__ubound_ = 5.0 * np.ones(dim)
 
-        # Load optima
-        o = np.loadtxt('data/optima.dat')
-        if o.shape[1] >= dim:
-            self._CFunction__O_ = o[:self._CFunction__nofunc_, :dim]
-        else: # randomly initialize
+        if self.o.shape[1] >= dim:
+            self._CFunction__O_ = self.o[:self._CFunction__nofunc_, :dim]
+        else:  # randomly initialize
             self._CFunction__O_ = self._CFunction__lbound_ + (self._CFunction__ubound_ - self._CFunction__lbound_) * np.random.rand((self._CFunction__nofunc_, dim))
 
         # Load M_: Rotation matrices
         if dim in (2, 3, 5, 10, 20):
-            fname = "data/CF4_M_D{}.dat".format(dim)
+            fname = self.function_data_file(4, dim)  # os.path.join(my_path, "data/CF4_M_D{}.dat".format(dim))
             self._CFunction__load_rotmat(fname)
         else:
             # M_ Identity matrices # TODO: Generate dimension independent rotation matrices
