@@ -11,7 +11,7 @@ import os
 import numpy as np
 
 # UNCOMMENT APPROPRIATELY
-# MINMAX = 1		# Minimization
+# MINMAX = 1	# Minimization
 MINMAX = -1		# Maximization
 
 
