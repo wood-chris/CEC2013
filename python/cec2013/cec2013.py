@@ -11,11 +11,11 @@ import math
 
 import numpy as np
 
-import functions as simple_functions
-import CF1
-import CF2
-import CF3
-import CF4
+from . import functions as simple_functions
+from . import CF1
+from . import CF2
+from . import CF3
+from . import CF4
 
 
 class CEC2013(object):
