@@ -6,7 +6,7 @@
 ###############################################################################
 
 import numpy as np
-from . import cfunction as cf
+import cfunction as cf
 
 
 class CF2(cf.CFunction):
